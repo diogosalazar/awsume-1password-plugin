@@ -103,6 +103,14 @@ def pre_get_credentials(config: dict, arguments: argparse.Namespace, profiles: d
                 )
                 first_profile_name = role_chain[0]
             first_profile = profiles.get(first_profile_name)
+
+            # Fetch source profile if necessary
+            if 'source_profile' in first_profile:
+                source_profile_name = first_profile['source_profile']
+                source_profile = profiles.get(source_profile_name)
+                if source_profile:
+                    first_profile.update(source_profile)
+                    
             source_credentials = profile_lib.profile_to_credentials(first_profile)
             source_access_key_id = source_credentials.get('AccessKeyId')
             if source_access_key_id == None:
